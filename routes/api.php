@@ -10,7 +10,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\FileUpload;
 use App\Http\Controllers\FakultetController;
 use App\Http\Controllers\KafedraController;
-
+use App\Http\Controllers\TeacherController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -55,5 +55,6 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
     Route::get('/fakultet', [FakultetController::class, 'index']);
     Route::get('/kafedra/{fakultet_id}', [KafedraController::class, 'index']);
+    Route::get('/teacher/{kafedra_id}', [TeacherController::class, 'index']);
   
 });
