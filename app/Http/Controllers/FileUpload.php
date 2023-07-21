@@ -62,12 +62,19 @@ class FileUpload extends Controller
     }
 }
 
-public function checkingFile(Request $request) {
+public function checkingFile($category) {
     $userId = auth()->id();
-    $category = $request->input('category_file');
+
+
+
     $file = File::where('user_id', $userId)
                 ->where('category_file', $category)
                 ->first();
+    // $files = DB::table('files')
+    // ->where('user_id', $teacherId)
+    // ->where('category_file', $category)
+    // ->first();
+
     if ($file) {
         return "true";
     } else {

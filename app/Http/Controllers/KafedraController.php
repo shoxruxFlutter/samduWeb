@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Kafedra;
 class KafedraController extends Controller
 {
-    public function index($fakultet_id)
+    public function __invoke($fakultet_id)
     {
 
         $kafedra = Kafedra::where('fakultet_id', $fakultet_id)->get();
