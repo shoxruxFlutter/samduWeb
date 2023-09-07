@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
 use App\Models\File;
 use Illuminate\Support\Facades\DB;
 
@@ -46,16 +46,21 @@ class FileUpload extends Controller
     $file = DB::table('files')->where('user_id', $userId)->where('category_file', $category)->first();
 
     if ($file) {
-       
-    
+        $filePath = $file->file_path;
+        $fileName = $file->name;
+        $file = Storage::disk('public')->get($filePath);
+        $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
 
-    $path = storage_path('app/public' . str_replace('/storage', '', $file->file_path));
-    $headers = [
-        'Content-Type' => 'application/pdf',
-        'Content-Disposition' => 'attachment; filename="' . $file->name . '"',
-    ];
+    // $path = storage_path('app/public' . str_replace('/storage', '', $file->file_path));
+    // $headers = [
+    //     'Content-Type' => 'application/pdf',
+    //     'Content-Disposition' => 'attachment; filename="' . $file->name . '"',
+    // ];
 
-    return response()->download($path, $file->name, $headers);
+    // return response()->download($path, $file->name, $headers);
+    return response($file, 200)
+    ->header('Content-Type', 'application/octet-stream')
+    ->header('Content-Disposition', 'attachment; filename="' . $fileName . '.' . $fileExtension . '"');
     }
     else{
         abort(404, 'File not found.');
