@@ -17,15 +17,25 @@ class FileUpload extends Controller
         $req->validate([
         'file' => 'required|mimes:csv,txt,xlx,xls,pdf,jpg,png|max:2048'
         ]);
-        $fileModel = new File;
 
+        $category = $req->input('category_file');
+        $userId = $req->input('user_id');
+      
+        $dd = DB::table('files')->where('user_id', $userId)->where('category_file', $category)->first();
+        if($dd){
+            return response([
+                'message' => 'File exist.'
+            ], 403);
+        }
+    
+        $fileModel = new File;
         if($req->file()) {
             $fileName = $req->file->getClientOriginalName();
             $filePath = $req->file('file')->storeAs('uploads', $fileName, 'public');
             $title = $req->input('category_file');
             $fileModel->name = $req->file->getClientOriginalName();
             $fileModel->file_path = '/storage/' . $filePath;
-            $fileModel->user_id = auth()->id();
+            $fileModel->user_id = $req->input('userId');
             $fileModel->category_file = $title;
             $fileModel->save();
             return back()
