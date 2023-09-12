@@ -43,6 +43,10 @@ class FileUpload extends Controller
             ->with('file', $fileName);
         }
 
+        return response([
+            'message' => 'Upload success.'
+        ], 200);
+
       
    }
 
@@ -77,9 +81,10 @@ class FileUpload extends Controller
     }
 }
 
-public function checkingFile($category) {
-    $userId = auth()->id();
+public function checkingFile(Request $request) {
 
+    $category = $req->input('category_file');
+    $userId = $req->input('user_id');
 
 
     $file = File::where('user_id', $userId)
@@ -91,10 +96,16 @@ public function checkingFile($category) {
     // ->first();
 
     if ($file) {
-        return "true";
+        return response([
+            'message' => 'File exist.'
+        ], 200);
+
     } else {
-        abort(404, 'File not found.');
-        return false;
+        
+        return response([
+            'message' => 'File not found.'
+        ], 404);
+    
     }
 }
 }

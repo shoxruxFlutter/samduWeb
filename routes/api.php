@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
     Route::post('/upload-file', [FileUpload::class, 'file_upload'])->name('fileUpload');
     Route::get('/downloadFile', [FileUpload::class, 'downloadFile'])->name('downloadFile');
-    Route::get('/checkingFile/{category}', [FileUpload::class, 'checkingFile'])->name('downloadFile');
+    Route::get('/checkingFile', [FileUpload::class, 'checkingFile'])->name('checkingFile');
 
     Route::get('/fakultet', [FakultetController::class, 'index']);
     Route::get('/kafedra/{fakultet_id}', KafedraController::class);
